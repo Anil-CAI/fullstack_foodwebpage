@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHA Food Delivery</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+            color: #333;
+        }
+        
+        header {
+            background: url("img/banner.jpg") no-repeat center center/cover;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            height: 100vh;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            padding: 0 60px;
+        }
+        nav .logo {
+            height: 200px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 50px; /* ⬅️ More spacing between links */
+            margin-left: auto; /* ⬅️ This forces it to the right */
+            padding-right: 0px; /* Optional: adds a little gap from the edge */
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 28px; /* ⬅️ increased from 25px */
+            padding: 10px 16px; /* ⬅️ spacing around the text */
+            transition: color 0.3s ease;
+            border-radius: 6px;
+        }
+        nav ul li a:hover {
+            color: #ff9100;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .hero {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: rgb(255, 255, 255);
+        }
+        .hero p {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #bebbbb;
+        }
+        .hero .explore-btn {
+            padding: 20px 60px;
+            background: #fff;
+            border: none;
+            color: #ff6f61;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .hero .explore-btn:hover {
+            background: #ffd700;
+            color: #fff;
+            transform: scale(1.05);
+            animation: bounce 0.6s;
+        }
+
+        .search-bar {
+            width: 100%;
+            height: 100px;
+            max-height: 500px;
+            max-width: 1500px;
+            padding: 18px 25px;
+            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.1); /* semi-transparent */
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            outline: none;
+            backdrop-filter: blur(5px); /* adds a nice glassmorphism effect */
+        }
+        .search-bar::placeholder {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .fade-init {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #restaurants, #menu, #offers {
+            padding: 50px 0;
+        }
+        .restaurant, .menu-item, .offer {
+            max-width: 350px;
+            margin: auto;
+        }
+        #restaurants h2, #menu h2, #offers h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #ff6f61;
+        }
+
+        .restaurant-list, .menu-list, .offer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+}
+
+        .restaurant, .menu-item, .offer {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .restaurant:hover, .menu-item:hover, .offer:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant img, .menu-item img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .restaurant:hover img, .menu-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .restaurant h3, .menu-item h3 {
+            margin: 15px 0 10px;
+            color: #ff6f61;
+        }
+        .restaurant p, .menu-item p {
+            color: #666;
+        }
+
+        .restaurant button, .menu-item button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .restaurant button:hover, .menu-item button:hover {
+            background: linear-gradient(135deg, #ff4a3d, #ff6f61);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff6f61, 0 0 20px #ff4a3d;
+        }
+
+        .offer {
+            background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+            color: #fff;
+        }
+
+        .menu-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+            border: none;
+            color: #fff;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(135deg, #ff4a3d, #ff6f61);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff6f61, 0 0 20px #ff4a3d;
+        }
+
+
+        footer {
+            background: linear-gradient(135deg, #333, #222);
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <img src="img/banner.jpg" class="logo" alt="MAHA Logo">
+                <ul>
+                    <li><a href="vender.html">Vendor</a></li>
+                    <li><a href="restaurent.html">Restaurants</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="offers.html">Offers</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="hero">
+            <input type="text" class="search-bar" placeholder="Search for food, restaurants...">
+                <h1 id="typed-text">Fast & Delicious</h1>
+                <p>Order from top restaurants & get it delivered in minutes!</p>
+                <button class="explore-btn" onclick="window.location.href='restaurent.html'">Explore Now</button>
+
+            
+        </div>
+    </header>
+
+    <section id="restaurants">
+        <div class="container">
+            <h2>Top Restaurants</h2>
+            <div class="restaurant-list">
+                <div class="restaurant">
+                    <img src="img/salad.jpg" alt="Spice Heaven">
+                    <h3>Spice Heaven</h3>
+                    <p>North Indian, Chinese</p>
+                    <a href="menu.html" class="menu-btn">View Menu</a>
+                </div>
+                <div class="restaurant">
+                    <img src="img/Rogan_Josh.jpg" alt="Taste Buds">
+                    <h3>Taste Buds</h3>
+                    <p>Fast Food, Snacks</p>
+                    <a href="menu.html" class="menu-btn">View Menu</a>
+                </div>
+                <div class="restaurant">
+                    <img src="img/Hyderabadi Biryani.jpg" alt="Biryani Point">
+                    <h3>Biryani Point</h3>
+                    <p>Hyderabadi, Mughlai</p>
+                    <a href="menu.html" class="menu-btn">View Menu</a>
+                </div>
+                <div class="restaurant">
+                    <img src="img/Hyderabadi Biri.jpg" alt="Biryani Point">
+                    <h3>Biryani Point</h3>
+                    <p>Hyderabadi, Mughlai</p>
+                    <a href="menu.html" class="menu-btn">View Menu</a>
+                </div>
+                <div class="restaurant">
+                    <img src="img/Hyderabadi Bni.jpg" alt="Biryani Point">
+                    <h3>Biryani Point</h3>
+                    <p>Hyderabadi, Mughlai</p>
+                    <a href="menu.html" class="menu-btn">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu">
+        <div class="container">
+            <h2>Popular Dishes</h2>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <img src="img/butter_chicken.jpg" alt="Butter Chicken">
+                    <h3>Butter Chicken</h3>
+                    <p>$12.99</p>
+                    <a href="cart.html" class="menu-btn">Add To cart</a>
+                </div>
+                <div class="menu-item">
+                    <img src="img/Malai_Kofta.jpg" alt="Malai Kofta">
+                    <h3>Malai Kofta</h3>
+                    <p>$10.99</p>
+                    <a href="cart.html" class="menu-btn">Add To cart</a>
+                </div>
+                <div class="menu-item">
+                    <img src="img/Samosa.jpg" alt="Samosa">
+                    <h3>Samosa</h3>
+                    <p>$3.99</p>
+                    <a href="cart.html" class="menu-btn">Add To cart</a>
+                </div>
+                <div class="menu-item">
+                    <img src="img/Samosa.jpg" alt="Samosa">
+                    <h3>osa</h3>
+                    <p>$3.99</p>
+                    <a href="cart.html" class="menu-btn">Add To cart</a>
+                </div>
+                <div class="menu-item">
+                    <img src="img/Samosa.jpg" alt="Samosa">
+                    <h3>Sam</h3>
+                    <p>$3.99</p>
+                    <a href="cart.html" class="menu-btn">Add To cart</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="offers">
+        <div class="container">
+            <h2>Exclusive Offers</h2>
+            <div class="offer-list">
+                <a  href = "offers.html" class="offer">20% Off on First Order</a>
+                <a  href = "offers.html" class="offer">Free Delivery for Orders Above $15</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 MAHA Food Delivery. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.menu-item button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Added to cart!');
+            });
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('.restaurant, .menu-item, .offer').forEach(el => {
+            el.classList.add('fade-init');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
